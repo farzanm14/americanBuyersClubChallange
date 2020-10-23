@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, Text, Button, Modal, TouchableNativeFeedback,StyleSheet } from 'react-native'
+import { View, Text, Image, Modal, TouchableNativeFeedback, ImageBackground } from 'react-native'
 import { Icon } from 'native-base'
+import detailModalStyles from '../styles/detailModalStyles'
 
 const MovieDetailModal = ({ showDetail, onRequestClose, selectedMovie }) => {
     return (
@@ -10,31 +11,37 @@ const MovieDetailModal = ({ showDetail, onRequestClose, selectedMovie }) => {
             visible={showDetail}
             onRequestClose={() => onRequestClose()}
         >
-            <View style={modalStyles.container}>
-                <TouchableNativeFeedback onPress={() => onRequestClose()} >
+            <View style={detailModalStyles.container}>
+                <TouchableNativeFeedback onPress={() => onRequestClose()}>
                     <Icon name='md-close' style={{ color: 'white', alignSelf: 'flex-end', margin: 10 }} />
                 </TouchableNativeFeedback>
-                <View style={modalStyles.insideContainer}>
-                    <Text>{selectedMovie.title}</Text>
+                <View style={detailModalStyles.insideContainer}>
+                    <ImageBackground style={detailModalStyles.backdropStyle} source={{ uri: selectedMovie.backdrop }}>
+                        <View style={detailModalStyles.headerContainer}>
+                            <Image
+                                resizeMode="contain"
+                                style={detailModalStyles.itemPoster}
+                                source={{ uri: selectedMovie.poster }}
+                            />
+                            <View style={detailModalStyles.titleRatingContainer}>
+                                <Text style={detailModalStyles.titleText}>{selectedMovie.title}</Text>
+                                <Text>({"imdb " + selectedMovie.imdb_rating})</Text>
+                            </View>
+                        </View>
+                    </ImageBackground>
+                    <View style={detailModalStyles.secondRowDetailContainer}>
+                        <Text style={detailModalStyles.otherText}>Directed by: {selectedMovie.director} | {selectedMovie.length}</Text>
+                        <View style={detailModalStyles.castContainer}>
+                            <Text>Cast: </Text>
+                            {selectedMovie.cast.map((item, index) => { return (<Text>{item}{index + 1 >= selectedMovie.cast.length ? " " : ', '}</Text>) })}
+                        </View>
+                        <View style={detailModalStyles.castContainer}>
+                            <Text>Overview: {selectedMovie.overview}</Text>
+                        </View>
+                    </View>
                 </View>
             </View>
         </Modal>
     )
 }
 export default MovieDetailModal;
-
-const modalStyles = StyleSheet.create({
-
-    container: {
-        flex: 1, flexDirection: 'column', justifyContent: 'flex-start',
-         alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    },
-    insideContainer: {
-        width: '90%',
-        // height: '80%',
-        backgroundColor: 'white',
-        borderRadius: 14,
-        padding: 5,
-        justifyContent: 'space-around', alignItems: 'center'
-    },
-})
