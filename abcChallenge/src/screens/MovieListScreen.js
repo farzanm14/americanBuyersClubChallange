@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Button, ActivityIndicator } from 'react-native'
-import MovieDetailModal from './MovieDetailModal'
+import { ScrollView, View, Text, Button, ActivityIndicator } from 'react-native'
 import Http from '../tools/HttpService'
+import CustomListComponent from '../components/CustomListComponent'
+import movieScreenStyles from '../styles/movieScreenStyles'
 
 const MovieListScreen = (props) => {
-    const [showDetail, setDetailVisibility] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [list, setList] = useState([]);
 
     useEffect(() => {
         getMovies()
     }, [])
 
     return (
-        <View>
-            <Text onPress={() => setDetailVisibility(true)}>list screen</Text>
-            <MovieDetailModal
-                showDetail={showDetail}
-                onRequestClose={() => setDetailVisibility(false)}
-                selectedMovie='mulan'
-            />
-            {loading ? <ActivityIndicator color='blue'/> : <View>
-                <Text>custom list comes here</Text>
-            </View>}
-        </View>
+        <ScrollView>
+            <Text style={movieScreenStyles.headerText} >W o o k i e{'\n'}M o v i e s</Text>
+            <View>
+                <CustomListComponent list={list.filter(item => item.genres.indexOf('Action') > -1)} listLoading={loading} listName={'Action'} />
+                <CustomListComponent list={list.filter(item => item.genres.indexOf('Adventure') > -1)} listLoading={loading} listName={'Adventure'} />
+                <CustomListComponent list={list.filter(item => item.genres.indexOf('Drama') > -1)} listLoading={loading} listName={'Drama'} />
+                <CustomListComponent list={list.filter(item => item.genres.indexOf('Crime') > -1)} listLoading={loading} listName={'Crime'} />
+                <CustomListComponent list={list.filter(item => item.genres.indexOf('Mystery') > -1)} listLoading={loading} listName={'Mystery'} />
+                <CustomListComponent list={list.filter(item => item.genres.indexOf('Romance') > -1)} listLoading={loading} listName={'Romance'} />
+            </View>
+        </ScrollView>
     )
 
 
@@ -30,11 +31,12 @@ const MovieListScreen = (props) => {
         setLoading(true)
         Http.httpGetJwt(`movies`).then(res => {
             if (res.status == 200) {
-                console.log('___ get movies res ___', res.data.movies)
+                // console.log('___ get movies res ___', res.data.movies)
+                setList(res.data.movies)
                 setLoading(false)
             }
         }).catch(err => {
-            console.log('___ get movies err ___', err)
+            // console.log('___ get movies err ___', err)
             setLoading(false)
         })
     }

@@ -7,7 +7,9 @@ import SearchScreen from './SearchScreen'
 const Home = (props) => {
     return (
         <Container>
-            <Tabs tabBarPosition='bottom'>
+            <Tabs
+                locked
+                tabBarPosition='bottom'>
                 <Tab heading={<TabHeading><Icon name="md-home-outline" /><Text>Home</Text></TabHeading>}>
                     <MovieListScreen />
                 </Tab>
