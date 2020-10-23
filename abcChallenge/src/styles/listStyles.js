@@ -16,5 +16,19 @@ export default StyleSheet.create({
     },
     itemPoster:{
          width: wp('30%'), height: wp('40%'), marginHorizontal: wp('2%'), borderRadius: wp('4%'), 
+    },emptyListText:{
+        color:'gray',
+        alignSelf:'center',
+        flex:1,
+        textAlign:'center',
+        fontSize:12
+    },
+    verticalContainer:{
+       marginVertical:hp('1%') ,
+       flexDirection:'row'
+    },
+    moreDetailContainer:{
+        justifyContent:'space-around',
+        padding: wp('2%'),
     }
 });

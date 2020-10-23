@@ -5,7 +5,7 @@ import listStyles from '../styles/listStyles'
 import MovieDetailModal from '../screens/MovieDetailModal'
 
 
-function CustomListComponent({ list, listLoading, listName }) {
+function CustomListComponent({ list, listLoading, listName, isVertical }) {
     const [showDetail, setDetailVisibility] = useState(false);
     const [selectedItem, setItem] = useState();
 
@@ -13,10 +13,10 @@ function CustomListComponent({ list, listLoading, listName }) {
         <View style={listStyles.listContainer}>
             <View><Text style={listStyles.listTitle}>{listName}</Text></View>
             <FlatList
-                horizontal
+                horizontal={!isVertical}
                 showsHorizontalScrollIndicator={false}
                 data={list}
-                ListEmptyComponent={listLoading ? <ActivityIndicator color='blue' /> : <Text>empty</Text>}
+                ListEmptyComponent={listLoading ? <ActivityIndicator color='blue' /> : <Text style={listStyles.emptyListText}>empty list</Text>}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity onPress={() => {
@@ -24,13 +24,20 @@ function CustomListComponent({ list, listLoading, listName }) {
                         setDetailVisibility(true)
                     }}>
                         <View
-                            style={listStyles.itemContainer} key={index}>
+                            style={isVertical ? listStyles.verticalContainer : listStyles.itemContainer} key={index}>
                             <Image
                                 resizeMode="contain"
                                 key={index}
                                 style={listStyles.itemPoster}
                                 source={{ uri: item.poster }}
                             />
+                            {isVertical ? <View style={listStyles.moreDetailContainer}>
+                                <Text style={{fontWeight:'bold'}}>{item.title}</Text>
+                                <Text>({"imdb " + item.imdb_rating})</Text>
+                                <Text>Directed by: {item.director}</Text>
+                                <Text>{item.length}</Text>
+                            </View>
+                                : null}
                         </View>
                     </TouchableOpacity>
                 )}

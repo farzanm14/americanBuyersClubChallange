@@ -33,7 +33,7 @@ const MovieListScreen = (props) => {
         setLoading(true)
         Http.httpGetJwt(`movies`).then(res => {
             if (res.status == 200) {
-                console.log('___ get movies res ___', res.data.movies)
+                // console.log('___ get movies res ___', res.data.movies)
                 setList(res.data.movies)
                 setLoading(false)
             }
