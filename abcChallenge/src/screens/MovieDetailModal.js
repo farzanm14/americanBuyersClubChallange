@@ -15,7 +15,7 @@ const MovieDetailModal = ({ showDetail, onRequestClose, selectedMovie }) => {
                     <Icon name='md-close' style={{ color: 'white', alignSelf: 'flex-end', margin: 10 }} />
                 </TouchableNativeFeedback>
                 <View style={modalStyles.insideContainer}>
-                    <Text>{selectedMovie}</Text>
+                    <Text>{selectedMovie.title}</Text>
                 </View>
             </View>
         </Modal>
